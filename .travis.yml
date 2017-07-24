@@ -1,1 +1,12 @@
 language: php
+services:
+  - postgresql
+before_script:
+  - composer install
+  - composer dump-autoload
+  - cp .env.travis .env
+  - php artisan key:generate
+  - php artisan vendor:publish
+  - psql -c 'create database devopsclub_test;' -U postgres
+  - php artisan migrate
+script: phpunit
