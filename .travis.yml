@@ -8,6 +8,7 @@ before_script:
   - composer dump-autoload
   - cp .env.travis .env
   - php artisan key:generate
+  - php artisan config:clear
   - php artisan vendor:publish
   - psql -c 'create database devopsclub_test;' -U postgres
   - php artisan migrate
