@@ -15,7 +15,6 @@
                                         <a href="{{ url('category/'.$article['category']['name']) }}" class="index-article-list-category">{{ $article['category']['display_name'] }}</a>
                                     @endif
                                     <a href="{{ url('article/'.($article['url'] ? $article['url'] : $article['uuid'])) }}">
-                                        {{ $article['id'] }}
                                         {{ mb_strlen($article['title']) > 30 ? mb_substr($article['title'], 0, 30)."……" : $article['title'] }}
                                     </a>
                                 </div>

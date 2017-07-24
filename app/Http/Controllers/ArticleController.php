@@ -332,6 +332,11 @@ class ArticleController extends Controller
         return 0;
     }
 
+    public function getUuid($title)
+    {
+        return Uuid::generate(3, $title.Carbon::now()->serialize().str_random(10), Uuid::NS_DNS);
+    }
+
     /**
      * 优化文章查询结果，增加用户（User）、分类（Category）和标签（Tag）信息
      *
