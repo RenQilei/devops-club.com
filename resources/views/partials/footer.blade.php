@@ -13,10 +13,6 @@
             Developed and Maintained by Qilei Ren with <i class="fa fa-heart"></i>
         </div>
 
-        <div id="site-builder">
-            Latest Git Status: {{ getLatestGitStatus('hashcode') }} at {{ Carbon\Carbon::createFromTimestamp(getLatestGitStatus('timestamp')) }}
-        </div>
-
     </div>
 
 </footer>

@@ -19,4 +19,4 @@ before_script:
   - psql -c 'create database devopsclub_test;' -U postgres
   # migration
   - php artisan migrate
-script: vendor/bin/phpunit
+script: phpunit
