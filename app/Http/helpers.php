@@ -10,6 +10,18 @@ use Carbon\Carbon;
  */
 function getLatestGitStatus($key)
 {
+    // 用于在测试环境下返回结果
+    if (env('APP_ENV') == 'test') {
+        switch ($key) {
+            case "hashcode":
+                return "Nothing";
+            case "timestamp":
+                return Carbon::now()->timestamp;
+            default:
+                return "";
+        }
+    }
+
     $file = @fopen(base_path(".git/logs/HEAD"), "r");
 
     if ($file) {
