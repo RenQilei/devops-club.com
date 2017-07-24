@@ -58,7 +58,7 @@
                     @if($currentPage > 1)
                         <a href="{{ url('/?page='.($currentPage - 1)) }}">更新</a>
                     @endif
-                    @if($currentPage <= $totalPageCount)
+                    @if($currentPage > 1 && $currentPage <= $totalPageCount)
                         <a href="{{ url('/?page='.($currentPage + 1)) }}">更旧</a>
                     @endif
                 </div>

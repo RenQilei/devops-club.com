@@ -48,6 +48,10 @@
     <!-- Bootstrap -->
     <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 
+    <!-- Highlight.js -->
+    <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/mono-blue.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
 
     @yield("basic-head")
 </head>
