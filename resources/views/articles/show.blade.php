@@ -4,7 +4,7 @@
     <div id="article-show" class="container">
         <div class="pure-g">
 
-            <div class="pure-u-2-3">
+            <div class="pure-u-3-3 pure-u-lg-2-3">
 
                 <div id="article-show-top">
                     <div id="article-show-tags">
@@ -67,7 +67,8 @@
 
             </div>
 
-            <div class="pure-u-1-3">
+            {{-- 手机版显示方式还未确定 --}}
+            <div class="pure-u-lg-1-3">
 
 
 

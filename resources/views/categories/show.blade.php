@@ -1,7 +1,7 @@
 @extends("layouts.main")
 
 @section("main-body")
-    <div class="container">
+    <div id="category-show" class="container">
 
         <div class="pure-g">
 

@@ -1,9 +1,10 @@
 @extends("layouts.main")
 
 @section("main-body")
+
     <div class="container">
         <div class="pure-g">
-            <div class="pure-u-2-3">
+            <div class="pure-3-3 pure-u-lg-2-3">
 
                 <div id="index-article-list">
                     <ul>
@@ -74,6 +75,25 @@
                 </div>
 
             </div>
+
+            <div class="pure-u-lg-1-3">
+
+            </div>
+
         </div>
     </div>
+@endsection
+
+@section("main-head")
+    <style>
+        body {
+            background-color: #eeeeee !important;
+        }
+
+        @media screen and (min-width: 64em) {
+            body {
+                background-color: #ffffff !important;
+            }
+        }
+    </style>
 @endsection

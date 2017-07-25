@@ -1,10 +1,10 @@
 <header>
-    <div class="container">
-        <a href="{{ url('/') }}">
-            <div id="logo" style="height: 50px; line-height: 50px; font-size: 2em; font-weight: 600;">
+    <div id="header" class="container">
+        <div id="logo" style="height: 50px; line-height: 50px; font-size: 2em; font-weight: 600;">
+            <a href="{{ url('/') }}">
                 DevOps Club
-            </div>
-        </a>
+            </a>
+        </div>
 
         <div id="user-panel-wrapper">
             @if(\Auth::check())
