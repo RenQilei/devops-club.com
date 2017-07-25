@@ -21,11 +21,14 @@
                             </a>
                             <ul class="pure-menu-children">
                                 <li class="pure-menu-item">
+                                    <a href="{{ url('article/draft/user/'.Auth::id()) }}" class="pure-menu-link">草稿箱</a>
+                                </li>
+                                <li class="pure-menu-item">
                                     <a href="{{ url('user/'.Auth::id().'/profile') }}" class="pure-menu-link">用户管理</a>
                                 </li>
                                 <li class="pure-menu-item">
                                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="pure-menu-link">
-                                        Logout
+                                        登出
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

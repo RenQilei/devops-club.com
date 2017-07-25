@@ -15,6 +15,15 @@
                         @foreach($articles as $article)
                             <li class="article-list-block">
                                 <div class="article-list-title">
+                                    {{-- 类型 --}}
+                                    @if($article['type'] == 0)
+                                        <img src="{{ asset('assets/images/original.png') }}">
+                                    @elseif($article['type'] == 1)
+                                        <img src="{{ asset('assets/images/reprint.png') }}">
+                                    @elseif($article['type'] == 2)
+                                        <img src="{{ asset('assets/images/translation.png') }}">
+                                    @endif
+                                    {{-- 标题 --}}
                                     <a href="{{ url('article/'.($article['url'] ? $article['url'] : $article['uuid'])) }}">
                                         {{ mb_strlen($article['title']) > 30 ? mb_substr($article['title'], 0, 30)."……" : $article['title'] }}
                                     </a>

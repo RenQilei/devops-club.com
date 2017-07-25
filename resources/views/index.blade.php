@@ -10,10 +10,19 @@
                         @foreach($articles as $article)
                             <li class="article-list-block">
                                 <div class="article-list-title">
+                                    {{-- 类型 --}}
+                                    @if($article['type'] == 0)
+                                        <img src="{{ asset('assets/images/original.png') }}">
+                                    @elseif($article['type'] == 1)
+                                        <img src="{{ asset('assets/images/reprint.png') }}">
+                                    @elseif($article['type'] == 2)
+                                        <img src="{{ asset('assets/images/translation.png') }}">
+                                    @endif
                                     {{-- 分类 --}}
                                     @if($article['category_id'])
                                         <a href="{{ url('category/'.$article['category']['name']) }}" class="index-article-list-category">{{ $article['category']['display_name'] }}</a>
                                     @endif
+                                    {{-- 标题 --}}
                                     <a href="{{ url('article/'.($article['url'] ? $article['url'] : $article['uuid'])) }}">
                                         {{ mb_strlen($article['title']) > 30 ? mb_substr($article['title'], 0, 30)."……" : $article['title'] }}
                                     </a>
@@ -58,7 +67,7 @@
                     @if($currentPage > 1)
                         <a href="{{ url('/?page='.($currentPage - 1)) }}">更新</a>
                     @endif
-                    @if($currentPage > 1 && $currentPage <= $totalPageCount)
+                    @if($totalPageCount != 1 && $currentPage <= $totalPageCount)
                         <a href="{{ url('/?page='.($currentPage + 1)) }}">更旧</a>
                     @endif
                 </div>

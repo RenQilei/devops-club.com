@@ -17,24 +17,33 @@
                         <div id="article-show-edit-panel">
                             <a href="{{ url('article/'.$article['uuid'].'/edit') }}" id="article-show-edit-panel-edit">编辑</a>
                             @if($article['is_draft'])
-                                <a href="{{ url('article/'.$article['uuid'].'/to_publish') }}}" id="article-show-edit-panel-status">转发布</a>
+                                <a href="{{ url('article/'.$article['uuid'].'/to_publish') }}}" id="article-show-edit-panel-status" class="pure-button-disabled">转发布</a>
                             @else
-                                <a href="{{ url('article/'.$article['uuid'].'/to_draft') }}}" id="article-show-edit-panel-status">转草稿</a>
+                                <a href="{{ url('article/'.$article['uuid'].'/to_draft') }}}" id="article-show-edit-panel-status" class="pure-button-disabled">转草稿</a>
                             @endif
                         </div>
                     @endif
                 </div>
 
                 <div id="article-show-title">
+                    {{-- 类型 --}}
+                    @if($article['type'] == 0)
+                        <img src="{{ asset('assets/images/original.png') }}">
+                    @elseif($article['type'] == 1)
+                        <img src="{{ asset('assets/images/reprint.png') }}">
+                    @elseif($article['type'] == 2)
+                        <img src="{{ asset('assets/images/translation.png') }}">
+                    @endif
+                    {{-- 标题 --}}
                     {{ $article['title'] }}
                 </div>
 
                 <div id="article-show-meta">
-                    <span>
-                        <a href="{{ url('category/'.$article['category']['name']) }}">
-                            {{ $article['category']['display_name'] }}
-                        </a>
-                    </span>
+                    @if($article['category_id'] != 0)
+                        <span id="article-show-category">
+                            <a href="{{ url('category/'.$article['category']['name']) }}">{{ $article['category']['display_name'] }}</a>
+                        </span>
+                    @endif
                     <span>
                         {{ $article['user_name'] }}
                     </span>

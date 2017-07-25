@@ -46,8 +46,17 @@
 
             <div id="article-right">
 
+                {{-- 类型 --}}
+                {{-- 此处开发未完成。 --}}
+                <label for="type">分类</label>
+                <select name="type" id="type">
+                    <option value="0">原创</option>
+                    <option value="1">转载</option>
+                    <option value="2">翻译</option>
+                </select>
+
                 {{-- 分类 --}}
-                {{-- 此处开发为完成。 --}}
+                {{-- 此处开发未完成。 --}}
                 <label for="category">分类</label>
                 <select name="category" id="category">
                     <option value="">可选择一个分类</option>

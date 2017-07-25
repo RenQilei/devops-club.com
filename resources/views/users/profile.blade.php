@@ -37,7 +37,7 @@
                             {{ Auth::user()->name }}
                         </div>
                         <div class="pure-u-1-5">
-                            <button class="pure-button">
+                            <button class="pure-button" disabled>
                                 修改
                             </button>
                         </div>
@@ -50,7 +50,7 @@
                         <div class="pure-u-1-5">
                         </div>
                         <div class="pure-u-1-5">
-                            <button class="pure-button">
+                            <button class="pure-button" disabled>
                                 修改
                             </button>
                         </div>

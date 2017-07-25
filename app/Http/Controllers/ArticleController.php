@@ -90,6 +90,7 @@ class ArticleController extends Controller
             'published_at'  => $published_at,
             'banner_url'    => $newBannerUrl,
             'is_draft'      => $article['status'] == 'is_draft' ? true : false,
+            'type'          => empty($article['type']) ? 0 : $article['type'],
         ];
 
         // 存入数据库
@@ -223,6 +224,7 @@ class ArticleController extends Controller
             'published_at'  => $published_at,
             'banner_url'    => $newBannerUrl,
             'is_draft'      => $article['status'] == 'is_draft' ? true : false,
+            'type'          => empty($article['type']) ? 0 : $article['type'],
         ];
 
         // 更新数据库
@@ -275,6 +277,18 @@ class ArticleController extends Controller
 
             return Storage::url($imageUrl);
         }
+    }
+
+    public function getUserDrafts($user)
+    {
+        $drafts = object2Array(Article::where('user_id', $user)->where('is_draft', true)->orderBy('published_at', 'desc')->orderBy('id', 'desc')->get());
+
+        // 处理作者、分类、标签
+        foreach ($drafts as $i => $draft) {
+            $drafts[$i] = ArticleController::refine($draft);
+        }
+
+        return view('articles.draft', compact('drafts'));
     }
 
     public function bannerImageUpload(Request $request)
@@ -332,11 +346,6 @@ class ArticleController extends Controller
         return 0;
     }
 
-    public function getUuid($title)
-    {
-        return Uuid::generate(3, $title.Carbon::now()->serialize().str_random(10), Uuid::NS_DNS);
-    }
-
     /**
      * 优化文章查询结果，增加用户（User）、分类（Category）和标签（Tag）信息
      *
@@ -345,16 +354,18 @@ class ArticleController extends Controller
      */
     public static function refine($article)
     {
-        // $articles[$i]['user_name'] 为用户名
-        $article['user_name'] = User::find($article['user_id'])->name;
-        // $articles[$i]['category'] 为分类信息
-        $article['category'] = $article['category_id'] ? Category::find($article['category_id'])->toArray() : null;
-        // 获取文章标签数组
-        $article['tags'] = Article::find($article['id'])->tags->toArray();
-        // 生成","分隔的标签字符串
-        $article['tags_string'] = '';
-        foreach ($article['tags'] as $tag) {
-            $article['tags_string'] .= empty($article['tags_string']) ? $tag['name'] : ",".$tag['name'];
+        if ($article) {
+            // $articles[$i]['user_name'] 为用户名
+            $article['user_name'] = User::find($article['user_id'])->name;
+            // $articles[$i]['category'] 为分类信息
+            $article['category'] = $article['category_id'] ? Category::find($article['category_id'])->toArray() : null;
+            // 获取文章标签数组
+            $article['tags'] = Article::find($article['id'])->tags->toArray();
+            // 生成","分隔的标签字符串
+            $article['tags_string'] = '';
+            foreach ($article['tags'] as $tag) {
+                $article['tags_string'] .= empty($article['tags_string']) ? $tag['name'] : ",".$tag['name'];
+            }
         }
 
         return $article;

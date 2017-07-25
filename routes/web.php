@@ -20,12 +20,11 @@ Auth::routes();
 Route::get('/user/{user}/profile', 'UserController@profile');
 
 // 文章
-// 临时：获取文章UUID
-Route::get('/article/uuid/{title}', 'ArticleController@getUuid')->middleware(['auth']);
 Route::resource('/article', 'ArticleController');
 Route::group(['middleware' => 'auth'], function() {
     Route::post('/article/wang/image/upload', 'ArticleController@wangImageUpload');
     Route::post('/article/banner/image/upload', 'ArticleController@bannerImageUpload');
+    Route::get('/article/draft/user/{user}', 'ArticleController@getUserDrafts');
 });
 
 // 分类
