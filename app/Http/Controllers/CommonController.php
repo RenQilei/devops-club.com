@@ -23,7 +23,7 @@ class CommonController extends Controller
             $currentPage = $request->page;
         }
 
-        $limit = 20;
+        $limit = 15;
         $offset = ($currentPage - 1) * $limit;
 
         // 非删除、非草稿的文章
@@ -34,8 +34,8 @@ class CommonController extends Controller
             $articles[$i] = ArticleController::refine($article);
         }
 
-        $articleCount = DB::table('articles')->count();
-        $totalPageCount = ($articleCount % $limit) ? ($articleCount / $limit + 1) : ($articleCount / $limit);
+        $articleCount = DB::table('articles')->where('is_draft', false)->count();
+        $totalPageCount = ($articleCount % $limit) ? (floor($articleCount / $limit) + 1) : ($articleCount / $limit);
 
         return view("index", compact('articles', 'totalPageCount', 'currentPage'));
     }
