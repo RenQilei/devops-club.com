@@ -9,12 +9,6 @@
             <div class="pure-u-1 pure-u-lg-2-3">
 
                 <div id="article-show-top">
-                    <div id="article-show-tags">
-                        @foreach($article['tags'] as $tag)
-                            <a href="">{{ $tag['name'] }}</a>
-                        @endforeach
-                    </div>
-
                     @if(\Illuminate\Support\Facades\Auth::id() == $article['user_id'])
                         <div id="article-show-edit-panel">
                             <a href="{{ url('article/'.$article['uuid'].'/edit') }}" id="article-show-edit-panel-edit">编辑</a>
@@ -38,6 +32,12 @@
                     @endif
                     {{-- 标题 --}}
                     {{ $article['title'] }}
+                </div>
+
+                <div id="article-show-tags">
+                    @foreach($article['tags'] as $tag)
+                        <a href="">{{ $tag['name'] }}</a>
+                    @endforeach
                 </div>
 
                 <div id="article-show-meta">
@@ -67,9 +67,13 @@
                     {!! $article['content'] !!}
                 </div>
 
-                <div id="article-show-share">
+                {{-- 转载、翻译文章来源 --}}
+                <div id="article-show-source-info">
 
                 </div>
+
+                {{-- 文章分享 --}}
+                <div id="article-show-share"></div>
 
                 <script type="text/javascript">
                     var $config = {

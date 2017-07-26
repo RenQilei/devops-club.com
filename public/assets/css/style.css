@@ -2,7 +2,6 @@
 body {
     font-family: 'PingFangSC-Light','helvetica neue','hiragino sans gb','tahoma','microsoft yahei ui','microsoft yahei','simsun',sans-serif;
     font-size: 16px;
-
 }
 
 .container {
@@ -152,7 +151,6 @@ footer {
 }
 
 .index-article-list-category {
-    margin: 0 5px;
     padding: 0 5px;
     background-color: #3490de;
     color: #ffffff !important;
@@ -238,9 +236,9 @@ footer {
 
 .article-list-title a {
     color: #e35d5b;
-    font-size: 1em;
+    font-size: 1.125em;
     letter-spacing: 0;
-    line-height: 16px;
+    line-height: 1.2em;
     font-weight: 600;
 }
 
@@ -255,20 +253,13 @@ footer {
 }
 
 @media screen and (min-width: 64em) {
-    .article-list-title a {
-        color: #e35d5b;
-        font-size: 1.4em;
-        letter-spacing: 0.02em;
-        line-height: 28px;
-    }
-
     .article-list-title a:hover {
         color: #e44e44;
         text-decoration: underline;
     }
 
     .article-list-title img {
-        height: 25px;
+        height: 20px;
         vertical-align: top;
     }
 }
@@ -277,7 +268,6 @@ footer {
     margin: 10px 0 5px 0;
     color: #999999;
     line-height: 25px;
-    height: 25px;
     overflow: hidden;
 }
 
@@ -290,56 +280,24 @@ footer {
 }
 
 .article-list-tags a {
+    display: block;
+    float: left;
     background-color: #a56cc1;
-    padding: 0.24em 0.72em;
-    margin-right: 0.5em;
+    padding: 0 0.5em;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    font-size: 0.75em;
     color: #ffffff;
     font-weight: 300;
-}
-
-.article-list-more {
-    float: right;
-}
-
-.article-list-more a {
-    background-color: #e35d5b;
-    padding: 0.24em;
-    margin-right: 0.5em;
-    color: #ffffff;
-    font-weight: 300;
-    letter-spacing: 0;
-}
-
-@media screen and (min-width: 64em) {
-    .article-list-more a {
-        background-color: #999999;
-        padding: 0.24em 0.72em;
-        margin-right: 0.5em;
-        color: #ffffff;
-        font-weight: 300;
-    }
-}
-
-.article-list-more a:hover {
-    background-color: #e35d5b;
 }
 
 .article-list-brief {
     margin-top: 10px;
-    line-height: 1.2em;
+    font-size: 0.875em;
+    line-height: 1.3em;
     letter-spacing: 0;
     text-align: justify;
     color: #333333;
-}
-
-@media screen and (min-width: 64em) {
-    .article-list-brief {
-        margin-top: 15px;
-        line-height: 1.3em;
-        letter-spacing: 0.02em;
-        text-align: justify;
-        color: #333333;
-    }
 }
 
 .article-list-brief img {
@@ -502,16 +460,18 @@ footer {
 }
 
 #article-show-tags {
-    margin: 10px 0;
-    height: 25px;
     line-height: 25px;
-    float: left;
+    overflow: hidden;
 }
 
 #article-show-tags a {
+    display: block;
+    float: left;
     background-color: #a56cc1;
-    padding: 0.24em 0.72em;
+    padding: 0 0.5em;
+    margin-bottom: 0.2em;
     margin-right: 0.5em;
+    font-size: 0.75em;
     color: #ffffff;
     font-weight: 300;
 }
@@ -538,20 +498,10 @@ footer {
 #article-show-title {
     padding: 10px 0;
     color: #333333;
-    font-size: 1.8em;
-    letter-spacing: 0;
+    font-size: 1.5em;
+    letter-spacing: 0.01em;
     text-align: justify;
     font-weight: 600;
-}
-
-@media screen and (min-width: 64em) {
-    #article-show-title {
-        padding: 10px 0;
-        color: #333333;
-        font-size: 1.8em;
-        letter-spacing: 0.03em;
-        text-align: justify;
-    }
 }
 
 #article-show-title img {
@@ -560,9 +510,9 @@ footer {
 }
 
 #article-show-meta {
-    padding: 10px 0;
+    padding: 10px 0 5px 0;
     color: #999999;
-    font-size: 1em;
+    font-size: 0.875em;
     border-bottom: 1px solid #e35d5b;
     letter-spacing: 0;
 }
@@ -586,24 +536,17 @@ footer {
 }
 
 #article-show-content {
-    margin-top: 20px;
-    font-size: 1.14em;
+    margin-top: 10px;
+    font-size: 1em;
     text-align: justify;
-    letter-spacing: 0.01em;
+    letter-spacing: 0em;
     line-height: 1.6em;
     color: #333333;
 }
 
 #article-show-share {
-    margin: 20px 0;
     font-size: 0.8em !important;
     letter-spacing: 0;
-}
-
-@media screen and (min-width: 64em) {
-    #article-show-share {
-        margin: 20px 0;
-    }
 }
 
 #article-draft-title {

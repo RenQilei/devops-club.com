@@ -25,7 +25,7 @@
                                     @endif
                                     {{-- 标题 --}}
                                     <a href="{{ url('article/'.($article['url'] ? $article['url'] : $article['uuid'])) }}">
-                                        {{ mb_strlen($article['title']) > 30 ? mb_substr($article['title'], 0, 30)."……" : $article['title'] }}
+                                        {{ $article['title'] }}
                                     </a>
                                 </div>
                                 <div class="article-list-brief">
@@ -49,15 +49,11 @@
                                     {{--{{ mb_substr($article['published_at'], 0, 10) }}--}}
                                     {{--</span>--}}
                                     {{-- 标签 --}}
-                                    <span class="article-list-tags">
-                                                @foreach($article['tags'] as $tag)
+                                    <div class="article-list-tags">
+                                        @foreach($article['tags'] as $tag)
                                             <a href="">{{ $tag['name'] }}</a>
                                         @endforeach
-                                            </span>
-                                    {{-- 阅读全文 --}}
-                                    <span class="article-list-more">
-                                        <a href="{{ url('article/'.($article['url'] ? $article['url'] : $article['uuid'])) }}">阅读全文</a>
-                                    </span>
+                                    </div>
                                 </div>
                             </li>
                         @endforeach
