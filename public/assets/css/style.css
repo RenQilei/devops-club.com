@@ -586,12 +586,24 @@ footer {
 }
 
 #article-show-content {
-    margin-top: 10px;
+    margin-top: 20px;
     font-size: 1.14em;
     text-align: justify;
     letter-spacing: 0.01em;
     line-height: 1.6em;
     color: #333333;
+}
+
+#article-show-share {
+    margin: 20px 0;
+    font-size: 0.8em !important;
+    letter-spacing: 0;
+}
+
+@media screen and (min-width: 64em) {
+    #article-show-share {
+        margin: 20px 0;
+    }
 }
 
 #article-draft-title {
