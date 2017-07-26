@@ -4,14 +4,14 @@
 <div class="container">
     <div class="pure-g">
         <div class="pure-u-lg-1-5"></div>
-        <div class="pure-u-5-5 pure-u-lg-3-5">
+        <div class="pure-u-1 pure-u-lg-3-5">
             <div class="panel">
                 <div class="panel-heading">登录</div>
                 <div class="panel-body">
 
                     <div class="pure-g">
 
-                        <div class="pure-u-24-24 pure-u-lg-12-24">
+                        <div class="pure-u-1 pure-u-lg-12-24">
 
                             <form class="pure-form pure-form-stacked" method="POST" action="{{ route('login') }}">
                                 {{ csrf_field() }}
@@ -56,7 +56,7 @@
 
                         </div>
 
-                        <div class="pure-u-24-24 pure-u-lg-12-24">
+                        <div class="pure-u-1 pure-u-lg-12-24">
 
                             <div class="panel-column-line">
                                 <div id="panel-login-register-content">
