@@ -34,7 +34,7 @@
                                             <img src="{{ $article['banner_url'] }}">
                                         </a>
                                     @else
-                                        {{ mb_substr(strip_tags($article['content']), 0, 120)."……" }}
+                                        {{ mb_substr(strip_tags($article['content']), 0, 200)."……" }}
                                     @endif
                                 </div>
                                 <div class="article-list-meta">
