@@ -50,72 +50,7 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        // 获取全部请求数据
-        $article = $request->all();
-
-        // 创建一个 uuid
-        $uuid = Uuid::generate(3, $article['title'].Carbon::now()->serialize().str_random(10), Uuid::NS_DNS);
-        if (Article::withTrashed()->where('uuid', $uuid)->count()) {
-            // uuid 已存在
-            dd("uuid 冲突，请确认");
-        }
-
-        // 处理数据中的图片，将其全部转移至 /storage/app/public/images 中
-        // 转移完成后替换原内容中的路径值
-
-        // banner
-        $newBannerUrl = $article['banner_url'] ? $this->moveTempImageToPermanent($article['banner_url']) : '';
-
-        // 文章正文
-        $content = $article['content'];
-        $pattern = "/<img src=\"([\S]*?)\" alt=\"[\S]*\" style=\"[\S]*\">/";
-        preg_match_all($pattern, $content, $matches);
-        foreach ($matches[1] as $image) {
-            $newImageUrl = $image ? $this->moveTempImageToPermanent($image) : '';
-            $content = str_replace($image, $newImageUrl, $content);
-        }
-
-        // 发布时间
-        $published_at = Carbon::createFromFormat('Y-m-d', $article['published_at']);
-        $published_at = $published_at->isToday() ? $published_at : Carbon::createFromFormat('Y-m-d H', $article['published_at'].' 00');
-
-        // 构造新文章数组
-        $newArticle = [
-            'title'         => $article['title'],
-            'content'       => $content,
-            'uuid'          => $uuid,
-            'url'           => $article['url'],
-            'user_id'       => Auth::id(),
-            'category_id'   => empty($article['category']) ? 0 : $article['category'],
-            'published_at'  => $published_at,
-            'banner_url'    => $newBannerUrl,
-            'is_draft'      => $article['status'] == 'is_draft' ? true : false,
-            'type'          => empty($article['type']) ? 0 : $article['type'],
-        ];
-
-        // 存入数据库
-        $newArticle = Article::create($newArticle);
-
-        // 处理标签
-        $tags = explode(',', $article['tags']);
-        foreach ($tags as $tag) {
-            // 判断是否为空字段，如果为空则不处理
-            if ($tag) {
-                // 检查标签是否存在
-                $existedTag = Tag::where('name', $tag)->get()->first();
-                if ($existedTag) {
-                    // 存在，直接与新建文章进行关联
-                    $newArticle->tags()->attach($existedTag['id']);
-                }
-                else {
-                    // 不存在，创建新的标签并关联
-                    $newTag = Tag::create(['name' => $tag]);
-                    $newArticle->tags()->attach($newTag->id);
-                }
-            }
-        }
-
-        // 如果存入数据库失败
+        $newArticle = $this->articleHandler($request);
 
         // 跳转至文章展示页
         return redirect('article/'.($newArticle['url'] ? $newArticle['url'] : $newArticle['uuid']));
@@ -140,7 +75,7 @@ class ArticleController extends Controller
             $article->page_view += 1;
             $article->save();
 
-            $article = self::refine($article->toArray());
+            $article = self::refine($article);
         }
         else {
             dd("文章不存在");
@@ -180,77 +115,7 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, $article)
     {
-        $articleId = $this->getArticleId($article);
-
-        // 旧文章
-        $oldArticle = Article::find($articleId)->toArray();
-
-        // 获取旧文章正文图片信息
-        $pattern = "/<img src=\"([\S]*?)\" alt=\"[\S]*\" style=\"[\S]*\">/";
-        preg_match_all($pattern, $oldArticle['content'], $matches);
-        $oldArticleContentImages = $matches[1];
-        $oldArticleBannerImage = $oldArticle['banner_url'];
-
-        // 获取全部请求数据
-        $article = $request->all();
-
-        // 处理数据中的图片，将其全部转移至 /storage/app/public/images 中
-        // 转移完成后替换原内容中的路径值
-
-        // banner
-        $newBannerUrl = $article['banner_url'] ? $this->moveTempImageToPermanent($article['banner_url']) : '';
-
-        // 文章正文
-        $content = $article['content'];
-        $pattern = "/<img src=\"([\S]*?)\" alt=\"[\S]*\" style=\"[\S]*\">/";
-        preg_match_all($pattern, $content, $matches);
-        foreach ($matches[1] as $image) {
-            $newImageUrl = $image ? $this->moveTempImageToPermanent($image) : '';
-            $content = str_replace($image, $newImageUrl, $content);
-        }
-
-        // 发布时间
-        $published_at = Carbon::createFromFormat('Y-m-d', $article['published_at']);
-        $published_at = $published_at->isToday() ? $published_at : Carbon::createFromFormat('Y-m-d H', $article['published_at'].' 00');
-
-        // 构造新文章数组
-        $newArticle = [
-            'title'         => $article['title'],
-            'content'       => $content,
-            'uuid'          => $oldArticle['uuid'],
-            'url'           => $article['url'],
-            'user_id'       => Auth::id(),
-            'category_id'   => empty($article['category']) ? 0 : $article['category'],
-            'published_at'  => $published_at,
-            'banner_url'    => $newBannerUrl,
-            'is_draft'      => $article['status'] == 'is_draft' ? true : false,
-            'type'          => empty($article['type']) ? 0 : $article['type'],
-        ];
-
-        // 更新数据库
-        Article::where('id', $articleId)->update($newArticle);
-
-        // 更新标签
-        $tags = explode(',', $article['tags']);
-        $syncTagIds = [];
-        foreach ($tags as $tag) {
-            // 判断是否为空字段，如果为空则不处理
-            if ($tag) {
-                // 检查标签是否存在
-                $existedTag = Tag::where('name', $tag)->get()->first();
-                if ($existedTag) {
-                    array_push($syncTagIds, $existedTag['id']);
-                }
-                else {
-                    // 不存在，创建新的标签并关联
-                    $newTag = Tag::create(['name' => $tag]);
-                    array_push($syncTagIds, $newTag['id']);
-                }
-            }
-        }
-        Article::find($articleId)->tags()->sync($syncTagIds);
-
-        // 如果存入数据库失败
+        $newArticle = $this->articleHandler($request, $article);
 
         // 跳转至文章展示页
         return redirect('article/'.($newArticle['url'] ? $newArticle['url'] : $newArticle['uuid']));
@@ -369,5 +234,139 @@ class ArticleController extends Controller
         }
 
         return $article;
+    }
+
+    private function articleHandler($request, $article=[])
+    {
+        // 1. 更新文章则首先获取旧文章
+        $articleId = 0;
+        $oldArticle = [];
+        if ($article && ($request['_method'] == 'PUT' || $request['_method'] == 'PATCH')) {
+            $articleId = $this->getArticleId($article);
+            $oldArticle = Article::find($articleId)->toArray();
+        }
+
+        // 2. 获取请求数据
+        $article = $request->all();
+
+        // 3. 创建一个 uuid
+        // 如果是新建文章则创建，如果是更新文章则不创建
+        if(empty($oldArticle)) {
+            $uuid = Uuid::generate(3, $article['title'].Carbon::now()->serialize().str_random(10), Uuid::NS_DNS);
+            if (Article::withTrashed()->where('uuid', $uuid)->count()) {
+                // uuid 已存在
+                dd("uuid 冲突，请确认");
+            }
+        }
+        else {
+            $uuid = $oldArticle['uuid'];
+        }
+
+        // 4. 处理图片
+        // 处理数据中的图片，将其全部转移至 /storage/app/public/images 中
+        // 转移完成后替换原内容中的路径值
+        // banner
+        $newBannerUrl = $article['banner_url'] ? $this->moveTempImageToPermanent($article['banner_url']) : '';
+        // 文章正文图片
+        $content = $article['content'];
+        $pattern = "/<img src=\"([\S]*?)\" alt=\"[\S]*\" style=\"[\S]*\">/";
+        preg_match_all($pattern, $content, $matches);
+        foreach ($matches[1] as $image) {
+            $newImageUrl = $image ? $this->moveTempImageToPermanent($image) : '';
+            $content = str_replace($image, $newImageUrl, $content);
+        }
+
+        // 5. 发布时间
+        $published_at = Carbon::createFromFormat('Y-m-d', $article['published_at']);
+        $published_at = $published_at->isToday() ? $published_at : Carbon::createFromFormat('Y-m-d H', $article['published_at'].' 00');
+
+        // 6. 构造文章数组
+        $newArticle = [
+            'title'         => $article['title'],
+            'content'       => $content,
+            'uuid'          => $uuid,
+            'url'           => $article['url'],
+            'user_id'       => Auth::id(),
+            'category_id'   => empty($article['category']) ? 0 : $article['category'],
+            'published_at'  => $published_at,
+            'banner_url'    => $newBannerUrl,
+            'is_draft'      => $article['status'] == 'is_draft' ? true : false,
+            'type'          => empty($article['type']) ? 0 : $article['type'],
+        ];
+
+        // 8. 存入数据库
+        if(empty($oldArticle)) {
+            // 新建文章
+            $newArticle = Article::create($newArticle);
+        }
+        else {
+            // 更新文章
+            Article::where('id', $articleId)->update($newArticle);
+        }
+
+        // 9. 处理标签
+        $tags = explode(',', $article['tags']);
+        if (empty($oldArticle)) {
+            // 新建文章
+            foreach ($tags as $tag) {
+                // 判断是否为空字段，如果为空则不处理
+                if ($tag) {
+                    // 检查标签是否存在
+                    $existedTag = Tag::where('name', $tag)->get()->first();
+                    if ($existedTag) {
+                        // 存在，直接与新建文章进行关联
+                        $newArticle->tags()->attach($existedTag['id']);
+                    }
+                    else {
+                        // 不存在，创建新的标签并关联
+                        $newTag = Tag::create(['name' => $tag]);
+                        $newArticle->tags()->attach($newTag->id);
+                    }
+                }
+            }
+        }
+        else {
+            // 更新文章
+            $syncTagIds = [];
+            foreach ($tags as $tag) {
+                // 判断是否为空字段，如果为空则不处理
+                if ($tag) {
+                    // 检查标签是否存在
+                    $existedTag = Tag::where('name', $tag)->get()->first();
+                    if ($existedTag) {
+                        array_push($syncTagIds, $existedTag['id']);
+                    }
+                    else {
+                        // 不存在，创建新的标签并关联
+                        $newTag = Tag::create(['name' => $tag]);
+                        array_push($syncTagIds, $newTag['id']);
+                    }
+                }
+            }
+            Article::find($articleId)->tags()->sync($syncTagIds);
+        }
+
+        // 10. 处理更新文章时的老图片
+        if (!empty($oldArticle) && $oldArticle['banner_url']) {
+            // 删除已有banner
+            Storage::delete(preg_replace("/\/(storage|temp)\//", "", $oldArticle['banner_url']));
+        }
+        if (!empty($oldArticle)) {
+            // 获取文章正文中的图片
+            $pattern = "/<img src=\"([\S]*?)\" alt=\"[\S]*\" style=\"[\S]*\">/";
+            preg_match_all($pattern, $oldArticle['content'], $matches);
+            $oldArticleContentImages = $matches[1];
+            if ($oldArticleContentImages) {
+                foreach($oldArticleContentImages as $oldArticleContentImage) {
+                    Storage::delete(preg_replace("/\/(storage|temp)\//", "", $oldArticleContentImage));
+                }
+            }
+        }
+
+        // 11. 如果存入数据库失败
+
+        // 12. 返回更新后的文章
+        return $newArticle;
+
     }
 }

@@ -9,7 +9,8 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "predis/predis": "^1.1",
-        "webpatser/laravel-uuid": "2.*"
+        "webpatser/laravel-uuid": "2.*",
+        "klaravel/ntrust": "1.1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

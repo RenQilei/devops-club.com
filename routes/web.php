@@ -18,20 +18,18 @@ Auth::routes();
 
 // 用户管理
 Route::get('/user/{user}/profile', 'UserController@profile');
+// 临时：添加用户角色和控制
+Route::get('/user/role/permission/add', 'UserController@addOriginalRolePermissions')->middleware('auth');
 
 // 文章
 Route::resource('/article', 'ArticleController');
-Route::group(['middleware' => 'auth'], function() {
-    Route::post('/article/wang/image/upload', 'ArticleController@wangImageUpload');
-    Route::post('/article/banner/image/upload', 'ArticleController@bannerImageUpload');
-    Route::get('/article/draft/user/{user}', 'ArticleController@getUserDrafts');
-});
+Route::any('/article/wang/image/upload', 'ArticleController@wangImageUpload');
+Route::any('/article/banner/image/upload', 'ArticleController@bannerImageUpload');
+Route::get('/article/draft/user/{user}', 'ArticleController@getUserDrafts');
 
 // 分类
-Route::group(['middleware' => 'auth'], function() {
-    // 临时：添加默认的分类内容
-    Route::get('category/add', 'CategoryController@addOriginalCategories');
-    Route::resource('category', 'CategoryController');
-});
+// 临时：添加默认的分类内容
+Route::get('category/add', 'CategoryController@addOriginalCategories')->middleware('auth');
+Route::resource('category', 'CategoryController');
 
 

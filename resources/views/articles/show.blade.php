@@ -1,5 +1,3 @@
-{{-- articles.show --}}
-
 @extends("layouts.main")
 
 @section("main-body")
@@ -9,7 +7,7 @@
             <div class="pure-u-1 pure-u-lg-2-3">
 
                 <div id="article-show-top">
-                    @if(\Illuminate\Support\Facades\Auth::id() == $article['user_id'])
+                    @if(Auth::id() == $article['user_id'] || Auth::user()->hasRole('admin'))
                         <div id="article-show-edit-panel">
                             <a href="{{ url('article/'.$article['uuid'].'/edit') }}" id="article-show-edit-panel-edit">编辑</a>
                             @if($article['is_draft'])
@@ -79,7 +77,7 @@
                     var $config = {
                         // url                 : '', // 网址，默认使用 window.location.href
                         source              : '<meta name="site" content="http://devops-club.com" />', // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
-                        // title               : '', // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+                        title               : , // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
                         // description         : '', // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
                         // image               : '', // 图片, 默认取网页中第一个img标签
                         sites               : ['qq', 'wechat', 'weibo', 'qzone', 'tencent', 'douban', 'diandian', 'linkedin', 'facebook', 'twitter', 'google'], // 启用的站点
