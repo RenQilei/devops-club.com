@@ -56,6 +56,16 @@ class ArticleController extends Controller
         return redirect('article/'.($newArticle['url'] ? $newArticle['url'] : $newArticle['uuid']));
     }
 
+    public function reprintCreate()
+    {
+        return view('articles.reprint-create');
+    }
+
+    public function reprintStore(Request $request)
+    {
+
+    }
+
     /**
      * Display the specified resource.
      *

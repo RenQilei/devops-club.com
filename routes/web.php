@@ -22,10 +22,13 @@ Route::get('/user/{user}/profile', 'UserController@profile');
 Route::get('/user/role/permission/add', 'UserController@addOriginalRolePermissions')->middleware('auth');
 
 // 文章
-Route::resource('/article', 'ArticleController');
+// 通过文章地址进行转载
+Route::get('/article/reprint', 'ArticleController@reprintCreate');
+Route::post('/article/reprint', 'ArticleController@reprintStore');
 Route::any('/article/wang/image/upload', 'ArticleController@wangImageUpload');
 Route::any('/article/banner/image/upload', 'ArticleController@bannerImageUpload');
 Route::get('/article/draft/user/{user}', 'ArticleController@getUserDrafts');
+Route::resource('/article', 'ArticleController');
 
 // 分类
 // 临时：添加默认的分类内容

@@ -7,7 +7,7 @@
             <div class="pure-u-1 pure-u-lg-2-3">
 
                 <div id="article-show-top">
-                    @if(Auth::id() == $article['user_id'] || Auth::user()->hasRole('admin'))
+                    @if((Auth::id() == $article['user_id']) || (Auth::user() && Auth::user()->hasRole('admin')))
                         <div id="article-show-edit-panel">
                             <a href="{{ url('article/'.$article['uuid'].'/edit') }}" id="article-show-edit-panel-edit">编辑</a>
                             @if($article['is_draft'])
