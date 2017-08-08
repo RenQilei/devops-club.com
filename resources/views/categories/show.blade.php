@@ -51,7 +51,7 @@
                                     {{-- 标签 --}}
                                     <div class="article-list-tags">
                                         @foreach($article['tags'] as $tag)
-                                            <a href="">{{ $tag['name'] }}</a>
+                                            <a href="{{ url('tag/'.$tag['name']) }}">{{ $tag['name'] }}</a>
                                         @endforeach
                                     </div>
                                 </div>

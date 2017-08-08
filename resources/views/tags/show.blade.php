@@ -1,12 +1,16 @@
 @extends("layouts.main")
 
 @section("main-body")
+    <div id="category-show" class="container">
 
-    <div class="container">
         <div class="pure-g">
-            <div class="pure-u-1 pure-u-lg-2-3">
 
-                <div id="index-article-list">
+            <div class="pure-u-18-24">
+                <div id="category-show-title">
+                    {{ $tag['name'] }}
+                </div>
+
+                <div id="category-show-article-list">
                     <ul>
                         @foreach($articles as $article)
                             <li class="article-list-block">
@@ -19,10 +23,6 @@
                                     @elseif($article['type'] == 2)
                                         <img src="{{ asset('assets/images/translation.png') }}">
                                     @endif
-                                    {{-- 分类 --}}
-                                    @if($article['category_id'])
-                                        <a href="{{ url('category/'.$article['category']['name']) }}" class="index-article-list-category">{{ $article['category']['display_name'] }}</a>
-                                    @endif
                                     {{-- 标题 --}}
                                     <a href="{{ url('article/'.($article['url'] ? $article['url'] : $article['uuid'])) }}">
                                         {{ $article['title'] }}
@@ -34,19 +34,19 @@
                                             <img src="{{ $article['banner_url'] }}">
                                         </a>
                                     @else
-                                        {{ mb_substr(strip_tags($article['content']), 0, 200)."……" }}
+                                        {{ mb_substr(strip_tags($article['content']), 0, 120)."……" }}
                                     @endif
                                 </div>
                                 <div class="article-list-meta">
                                     {{-- 作者 --}}
-                                    {{--<span class="index-article-list-user">--}}
-                                        {{--<a href="">--}}
-                                            {{--{{ $article['user_name'] }}--}}
-                                        {{--</a>--}}
+                                    {{--<span class="category-show-article-list-user">--}}
+                                    {{--<a href="">--}}
+                                    {{--{{ $article['user_name'] }}--}}
+                                    {{--</a>--}}
                                     {{--</span>--}}
                                     {{-- 发布时间 --}}
-                                    {{--<span class="index-article-list-published">--}}
-                                        {{--{{ mb_substr($article['published_at'], 0, 10) }}--}}
+                                    {{--<span class="category-show-article-list-published">--}}
+                                    {{--{{ mb_substr($article['published_at'], 0, 10) }}--}}
                                     {{--</span>--}}
                                     {{-- 标签 --}}
                                     <div class="article-list-tags">
@@ -59,37 +59,28 @@
                         @endforeach
                     </ul>
                 </div>
+            </div>
 
-                <div id="index-article-pagination">
-                    @if($currentPage > 1)
-                        <a href="{{ url('/?page='.($currentPage - 1)) }}">更新</a>
-                    @endif
-                    第 {{ $currentPage }} 页
-                    @if($currentPage < $totalPageCount)
-                        <a href="{{ url('/?page='.($currentPage + 1)) }}">更旧</a>
-                    @endif
-                </div>
+            <div class="pure-u-1-24">
 
             </div>
 
-            <div class="pure-u-1 pure-u-lg-1-3">
-
+            <div class="pure-u-5-24">
+                <div id="tag-show-tag-list">
+                    <div id="tag-show-tag-list-title">
+                        热门标签
+                    </div>
+                    <ul class="pure-menu-list">
+                        @foreach($tags as $tag)
+                            <li>
+                                <a href="{{ url('tag/'.$tag['name']) }}">{{ $tag['name'] }}&nbsp;{{ $tag['article_count'] }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
 
         </div>
+
     </div>
-@endsection
-
-@section("main-head")
-    <style>
-        body {
-            background-color: #eeeeee !important;
-        }
-
-        @media screen and (min-width: 64em) {
-            body {
-                background-color: #ffffff !important;
-            }
-        }
-    </style>
 @endsection

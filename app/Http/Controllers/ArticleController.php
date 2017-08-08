@@ -38,8 +38,9 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::all()->toArray();
+        $pageTitle = '创建新文章';
 
-        return view('articles.create', compact('categories'));
+        return view('articles.create', compact('categories', 'pageTitle'));
     }
 
     /**
@@ -86,12 +87,13 @@ class ArticleController extends Controller
             $article->save();
 
             $article = self::refine($article);
+            $pageTitle = $article['title'];
         }
         else {
             dd("文章不存在");
         }
 
-        return view('articles.show', compact('article'));
+        return view('articles.show', compact('article', 'pageTitle'));
     }
 
     /**
@@ -112,8 +114,9 @@ class ArticleController extends Controller
         }
 
         $categories = Category::all()->toArray();
+        $pageTitle = '编辑文章';
 
-        return view('articles.edit', compact('article', 'categories'));
+        return view('articles.edit', compact('article', 'categories', 'pageTitle'));
     }
 
     /**

@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>DevOps Club</title>
+    <title>{{ isset($pageTitle) ? $pageTitle." | " : "" }}DevOpsClub - 全栈开发营</title>
 
     {{--<!-- Bootstrap -->--}}
     {{--<link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--}}

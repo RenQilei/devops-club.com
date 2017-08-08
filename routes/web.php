@@ -25,14 +25,20 @@ Route::get('/user/role/permission/add', 'UserController@addOriginalRolePermissio
 // 通过文章地址进行转载
 Route::get('/article/reprint', 'ArticleController@reprintCreate');
 Route::post('/article/reprint', 'ArticleController@reprintStore');
+// 新文章图片上传处理
 Route::any('/article/wang/image/upload', 'ArticleController@wangImageUpload');
 Route::any('/article/banner/image/upload', 'ArticleController@bannerImageUpload');
+// 用户草稿列表
 Route::get('/article/draft/user/{user}', 'ArticleController@getUserDrafts');
+// 文章基本RESTFUL
 Route::resource('/article', 'ArticleController');
 
 // 分类
 // 临时：添加默认的分类内容
 Route::get('category/add', 'CategoryController@addOriginalCategories')->middleware('auth');
 Route::resource('category', 'CategoryController');
+
+// 标签
+Route::resource('tag', 'TagController');
 
 

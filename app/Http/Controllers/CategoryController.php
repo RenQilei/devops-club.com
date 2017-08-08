@@ -40,10 +40,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 请求分类的全部文章列表展示页
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $category
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($category)
     {
@@ -59,8 +59,9 @@ class CategoryController extends Controller
         }
 
         $categories = Category::all()->toArray();
+        $pageTitle = "分类: ".$category['name'];
 
-        return view("categories.show", compact('category', 'articles', 'categories'));
+        return view("categories.show", compact('category', 'articles', 'categories', 'pageTitle'));
 
     }
 
@@ -98,6 +99,11 @@ class CategoryController extends Controller
         //
     }
 
+    /**
+     * 用于创建系统中默认的分类（临时）
+     *
+     * @return string
+     */
     public function addOriginalCategories()
     {
         // 添加分类：
