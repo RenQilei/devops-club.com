@@ -13,8 +13,17 @@
             <fieldset>
 
                 <label for="reprint_url">转载文章源地址</label>
+                <input id="reprint_url" type="text" name="reprint_url" placeholder="">
 
-                <input id="reprint_url" type="text" placeholder="">
+                <label for="reprint_category">分类</label>
+                <select name="reprint_category" id="reprint_category">
+                    <option value="">可选择一个分类</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category['id'] }}">{{ $category['display_name'] }}</option>
+                    @endforeach
+                </select>
+
+                <button class="pure-button pure-button-primary">转载</button>
 
             </fieldset>
 

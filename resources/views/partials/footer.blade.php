@@ -13,6 +13,10 @@
             Developed and Maintained by Qilei Ren with <i class="fa fa-heart"></i>
         </div>
 
+        <div id="site-cc">
+            若无特殊说明，本站原创内容默认均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>  进行许可。
+        </div>
+
     </div>
 
 </footer>

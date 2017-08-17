@@ -39,6 +39,7 @@ http://[your.domain]/user/role/permission/add
 * 支持redis：```predis/predis```。官方文档如是说，没毛病。
 * UUID生成器：```webpatser/laravel-uuid```。
 * RBAC：```klaravel/ntrust```。该包源于 ```Zizaco/entrust```，但后者貌似很久未更新了。
+* HTML解析：```sunra/php-simple-html-dom-parser```。
 
 # 其它依赖项目
 * [pure](https://purecss.io/)

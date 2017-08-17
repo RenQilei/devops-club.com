@@ -24,7 +24,7 @@ Route::get('/user/role/permission/add', 'UserController@addOriginalRolePermissio
 // 文章
 // 通过文章地址进行转载
 Route::get('/article/reprint', 'ArticleController@reprintCreate');
-Route::post('/article/reprint', 'ArticleController@reprintStore');
+Route::post('/article/reprint', 'ArticleController@reprintHandler');
 // 新文章图片上传处理
 Route::any('/article/wang/image/upload', 'ArticleController@wangImageUpload');
 Route::any('/article/banner/image/upload', 'ArticleController@bannerImageUpload');

@@ -25,7 +25,10 @@ class ArticleRequest extends FormRequest
     {
         return [
             'title'         => 'required',
-            'url'           => 'nullable|alpha_dash',
+            'url'           => [
+                'nullable',
+                'regex:/^[a-zA-Z0-9_\-\s]*$/'
+            ],
             'category_id'   => 'nullable|numeric',
             'published_at'  => 'date_format:Y-m-d',
         ];

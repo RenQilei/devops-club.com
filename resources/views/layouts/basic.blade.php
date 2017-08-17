@@ -11,6 +11,17 @@
 
     <title>{{ isset($pageTitle) ? $pageTitle." | " : "" }}DevOpsClub - 全栈开发营</title>
 
+    <!-- FAVICO -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#e35d5b">
+    <meta name="theme-color" content="#e35d5b">
+
+    <meta name="keywords" content="{{ isset($siteKeywords) ? $siteKeywords.',DevOpsClub,全栈开发营,DevOps,全栈,运维,开发' : 'DevOps-Club,全栈开发营,DevOps,全栈,运维,开发' }}">
+    <meta name="description" content="{{ isset($siteDescription) ? $siteDescription : '全栈开发营（DevOps-Club.com，DOC）是全栈开发者的社区之一，希望为全栈开发者提供一个分享、讨论、学习全栈开发相关资讯和知识的平台！ALWAYS ON DEVOPS\' WAY, NEVER BE ALONE!' }}">
+
     {{--<!-- Bootstrap -->--}}
     {{--<link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--}}
     {{----}}

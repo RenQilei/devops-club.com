@@ -71,6 +71,10 @@ header a:hover {
     padding: 0 10px;
 }
 
+#logo img {
+    height: 100%;
+}
+
 #header-toggle {
     position: relative;
     right: 0;
@@ -137,6 +141,14 @@ footer {
 
 #site-contributor i {
     color: #e35d5b;
+}
+
+#site-cc {
+    margin-top: 5px;
+}
+
+#site-cc a {
+    text-decoration: none;
 }
 
 /* MAIN BODY */

@@ -61,7 +61,9 @@ class CategoryController extends Controller
         $categories = Category::all()->toArray();
         $pageTitle = "分类: ".$category['name'];
 
-        return view("categories.show", compact('category', 'articles', 'categories', 'pageTitle'));
+        $siteKeywords = $category['name'];
+
+        return view("categories.show", compact('category', 'articles', 'categories', 'pageTitle', 'siteKeywords'));
 
     }
 

@@ -2,7 +2,7 @@
     <div id="header" class="container">
         <div id="logo" style="height: 50px; line-height: 50px; font-size: 2em; font-weight: 600;">
             <a href="{{ url('/') }}">
-                DevOps Club
+                <img src="{{ URL::asset('assets/images/logo.png') }}">
             </a>
         </div>
 

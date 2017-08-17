@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+use Sunra\PhpSimple\HtmlDomParser;
 use Webpatser\Uuid\Uuid;
 
 class ArticleController extends Controller
@@ -59,11 +61,60 @@ class ArticleController extends Controller
 
     public function reprintCreate()
     {
-        return view('articles.reprint-create');
+        $categories = Category::all()->toArray();
+        $pageTitle = '转载文章';
+
+        return view('articles.reprint-create', compact('categories', 'pageTitle'));
     }
 
-    public function reprintStore(Request $request)
+    public function reprintHandler(Request $request)
     {
+        $reprintHTML = HtmlDomParser::file_get_html($request->reprint_url, false, null, 0);
+
+        $title = trim($reprintHTML->getElementById("articleTitle")->plaintext);
+        $content = trim($reprintHTML->find("div[class=article__content]", 0)->innertext());
+        $uuid = Uuid::generate(3, $title.Carbon::now()->serialize().str_random(10), Uuid::NS_DNS);
+        $tags = [];
+        foreach ($reprintHTML->find("ul[class=article__title--tag]", 0)->find("li") as $li) {
+            array_push($tags, $li->plaintext);
+        }
+        $sourceWriter = trim($reprintHTML->find("a[class=article__widget-author-name]", 0)->plaintext);
+
+        $newArticle = [
+            'title'         => $title,
+            'content'       => $content,
+            'uuid'          => $uuid,
+            // 'url'           => $url,
+            'user_id'       => Auth::id(),
+            'category_id'   => empty($request->reprint_category) ? 0 : $request->reprint_category,
+            'published_at'  => Carbon::now(),
+            // 'banner_url'    => $newBannerUrl,
+            // 'is_draft'      => $article['status'] == 'is_draft' ? true : false,
+            'type'          => 1,
+            'source_writer' => $sourceWriter,
+            'source_link'   => $request->reprint_url
+        ];
+
+        $newArticle = Article::create($newArticle);
+
+        foreach ($tags as $tag) {
+            // 判断是否为空字段，如果为空则不处理
+            if ($tag) {
+                // 检查标签是否存在
+                $existedTag = Tag::where('name', $tag)->get()->first();
+                if ($existedTag) {
+                    // 存在，直接与新建文章进行关联
+                    $newArticle->tags()->attach($existedTag['id']);
+                }
+                else {
+                    // 不存在，创建新的标签并关联
+                    $newTag = Tag::create(['name' => $tag]);
+                    $newArticle->tags()->attach($newTag->id);
+                }
+            }
+        }
+
+        return redirect('article/edit/'.($newArticle['url'] ? $newArticle['url'] : $newArticle['uuid']));
 
     }
 
@@ -88,12 +139,15 @@ class ArticleController extends Controller
 
             $article = self::refine($article);
             $pageTitle = $article['title'];
+
+            $siteKeywords = $article['tags_string'];
+            $siteDescription = mb_substr($article['content'], 0, 140);
         }
         else {
             dd("文章不存在");
         }
 
-        return view('articles.show', compact('article', 'pageTitle'));
+        return view('articles.show', compact('article', 'pageTitle', 'siteKeywords', 'siteDescription'));
     }
 
     /**
@@ -244,6 +298,11 @@ class ArticleController extends Controller
             foreach ($article['tags'] as $tag) {
                 $article['tags_string'] .= empty($article['tags_string']) ? $tag['name'] : ",".$tag['name'];
             }
+            // 文章缩略图
+            $content = $article['content'];
+            $pattern = "/<img src=\"([\S]*?)\" alt=\"[\S]*\" style=\"[\S]*\">/";
+            preg_match_all($pattern, $content, $matches);
+            $article['thumbnail_link'] = empty($matches[1][0]) ? URL::asset('assets/images/default_share_image.png') : $matches[1][0];
         }
 
         return $article;
@@ -275,7 +334,10 @@ class ArticleController extends Controller
             $uuid = $oldArticle['uuid'];
         }
 
-        // 4. 处理图片
+        // 4. 优化 url
+        $url = str_replace([' ', '_'], "-", $article['url']);
+
+        // 5. 处理图片
         // 处理数据中的图片，将其全部转移至 /storage/app/public/images 中
         // 转移完成后替换原内容中的路径值
         // banner
@@ -289,16 +351,16 @@ class ArticleController extends Controller
             $content = str_replace($image, $newImageUrl, $content);
         }
 
-        // 5. 发布时间
+        // 6. 发布时间
         $published_at = Carbon::createFromFormat('Y-m-d', $article['published_at']);
         $published_at = $published_at->isToday() ? $published_at : Carbon::createFromFormat('Y-m-d H', $article['published_at'].' 00');
 
-        // 6. 构造文章数组
+        // 7. 构造文章数组
         $newArticle = [
             'title'         => $article['title'],
             'content'       => $content,
             'uuid'          => $uuid,
-            'url'           => $article['url'],
+            'url'           => $url,
             'user_id'       => Auth::id(),
             'category_id'   => empty($article['category']) ? 0 : $article['category'],
             'published_at'  => $published_at,
