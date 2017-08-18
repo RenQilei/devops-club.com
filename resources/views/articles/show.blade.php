@@ -79,7 +79,7 @@
                         source              : '<meta name="site" content="http://devops-club.com" />', // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
                         // title               : , // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
                         // description         : '', // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
-                        image               : '{{ $article["thumbnail_link"] }}', // 图片, 默认取网页中第一个img标签
+                        image               : '', // 图片, 默认取网页中第一个img标签
                         sites               : ['qq', 'wechat', 'weibo', 'qzone', 'tencent', 'douban', 'diandian', 'linkedin', 'facebook', 'twitter', 'google'], // 启用的站点
                         disabled            : [], // 禁用的站点
                         wechatQrcodeTitle   : "微信扫一扫：分享", // 微信二维码提示文字

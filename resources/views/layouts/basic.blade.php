@@ -68,6 +68,11 @@
 </head>
 <body>
 
+{{-- 还未接入微信公众号前，暂时用于缩略图 --}}
+<div style="display: none;">
+    <img src="{{ URL::asset('assets/images/default_share_image.png') }}" width="300" height="300">
+</div>
+
 @yield("basic-body")
 
 @yield("basic-script")
