@@ -141,7 +141,7 @@ class ArticleController extends Controller
             $pageTitle = $article['title'];
 
             $siteKeywords = $article['tags_string'];
-            $siteDescription = mb_substr($article['content'], 0, 140);
+            $siteDescription = mb_substr(strip_tags($article['content']), 0, 140);
         }
         else {
             dd("文章不存在");
@@ -298,11 +298,6 @@ class ArticleController extends Controller
             foreach ($article['tags'] as $tag) {
                 $article['tags_string'] .= empty($article['tags_string']) ? $tag['name'] : ",".$tag['name'];
             }
-            // 文章缩略图
-            $content = $article['content'];
-            $pattern = "/<img src=\"([\S]*?)\" alt=\"[\S]*\" style=\"[\S]*\">/";
-            preg_match_all($pattern, $content, $matches);
-            $article['thumbnail_link'] = empty($matches[1][0]) ? URL::asset('assets/images/default_share_image.png') : $matches[1][0];
         }
 
         return $article;
