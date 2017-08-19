@@ -55,7 +55,7 @@ class ArticleController extends Controller
     {
         $newArticle = $this->articleHandler($request);
 
-        $url = url('article/'.($newArticle['url'] ? $newArticle['url'] : $newArticle['uuid']));
+        $url = [url('article/'.($newArticle['url'] ? $newArticle['url'] : $newArticle['uuid']))];
 
         // 百度链接提交
         $api = 'http://data.zz.baidu.com/urls?site=www.devops-club.com&token=PeqHp7cf9Vc9wJEk&type=original';
