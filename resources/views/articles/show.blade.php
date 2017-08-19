@@ -61,7 +61,7 @@
                     </div>
                 @endif
 
-                <div id="article-show-content">
+                <div id="article-show-content" class="entry">
                     {!! $article['content'] !!}
                 </div>
 
