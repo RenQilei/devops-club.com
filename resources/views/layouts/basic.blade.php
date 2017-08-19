@@ -68,14 +68,25 @@
 </head>
 <body>
 
-{{-- 还未接入微信公众号前，暂时用于缩略图 --}}
-<div style="display: none;">
-    <img src="{{ URL::asset('assets/images/default_share_image.png') }}" width="300" height="300">
-</div>
-
 @yield("basic-body")
 
 @yield("basic-script")
+
+{{-- 百度链接提交自动推送 --}}
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
 
 {{-- 百度统计 --}}
 <script>

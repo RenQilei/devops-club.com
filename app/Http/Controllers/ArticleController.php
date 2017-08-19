@@ -55,6 +55,28 @@ class ArticleController extends Controller
     {
         $newArticle = $this->articleHandler($request);
 
+        $url = url('article/'.($newArticle['url'] ? $newArticle['url'] : $newArticle['uuid']));
+
+        // 百度链接提交
+        $api = 'http://data.zz.baidu.com/urls?site=www.devops-club.com&token=PeqHp7cf9Vc9wJEk&type=original';
+        $ch = curl_init();
+        $options =  array(
+            CURLOPT_URL => $api,
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS => implode("\n", $url),
+            CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
+        );
+        curl_setopt_array($ch, $options);
+        $result = curl_exec($ch);
+
+        if (!empty($request['success'])) {
+            // 推送成功
+        }
+        else {
+            // 推送失败
+        }
+
         // 跳转至文章展示页
         return redirect('article/'.($newArticle['url'] ? $newArticle['url'] : $newArticle['uuid']));
     }
@@ -141,7 +163,7 @@ class ArticleController extends Controller
             $pageTitle = $article['title'];
 
             $siteKeywords = $article['tags_string'];
-            $siteDescription = mb_substr(strip_tags($article['content']), 0, 140);
+            $siteDescription = mb_substr(htmlspecialchars_decode(strip_tags($article['content'])), 0, 140);
         }
         else {
             dd("文章不存在");
